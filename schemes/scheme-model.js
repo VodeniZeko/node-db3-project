@@ -24,18 +24,24 @@ async function findById(id) {
   }
 }
 
-async function findSteps(id) {
-  try {
-    const steps = await db
-      .select("st.id", "sc.scheme_name", "st.step_number", "st.instructions")
-      .from("steps as st")
-      .join("schemes as sc", "st.scheme_id", "sc.id")
-      .where("sc.id", id);
-    return (steps.length = 0 ? null : steps);
-  } catch (err) {
-    console.error(err);
-  }
+function findSteps(id) {
+  return db("steps")
+    .where("steps.scheme_id", "=", id)
+    .orderBy("steps.step_number");
 }
+// async function findSteps(id) {
+//   try {
+//     const steps = await db
+
+//     //   .select("st.id", "sc.scheme_name", "st.step_number", "st.instructions")
+//     //   .from("steps as st")
+//     //   .join("schemes as sc", "st.scheme_id", "sc.id")
+//     //   .where("sc.id", id);
+//     // return (steps.length = 0 ? null : steps);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
 
 function add(scheme) {
   return db("schemes")
